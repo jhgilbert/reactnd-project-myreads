@@ -1,7 +1,7 @@
 import React from 'react'
 import * as BooksAPI from './BooksAPI'
 import './App.css'
-import Book from './Book'
+import BookTile from './BookTile'
 
 class BooksApp extends React.Component {
   state = {
@@ -15,13 +15,27 @@ class BooksApp extends React.Component {
     books: []
   }
 
-  // fetch data for all books
   componentDidMount() {
+    this.refreshBookData()
+  }
+
+  // fetch data for all books
+  refreshBookData() {
     BooksAPI.getAll()
       .then((books) => {
         this.setState(() => ({
           books
         }))
+      })
+  }
+
+  changeShelf = (book, newShelf) => {
+    console.log("shelf change attempted")
+    console.log(book)
+    console.log(newShelf)
+    BooksAPI.update(book, newShelf)
+      .then((res) => {
+        this.refreshBookData()
       })
   }
 
@@ -64,7 +78,7 @@ class BooksApp extends React.Component {
                     <ol className="books-grid">
                       {books.filter((book) => {return book.shelf === "currentlyReading"}).map((book) => {
                         console.log(book)
-                        return <li key={book.id}><Book title={book.title} thumbnail={book.imageLinks.thumbnail} authors={book.authors} /></li>
+                        return <li key={book.id}><BookTile book={book} onShelfChange={this.changeShelf} /></li>
                       })}
                     </ol>
                   </div>
@@ -75,7 +89,7 @@ class BooksApp extends React.Component {
                     <ol className="books-grid">
                       {books.filter((book) => {return book.shelf === "wantToRead"}).map((book) => {
                         console.log(book)
-                        return <li key={book.id}><Book title={book.title} thumbnail={book.imageLinks.thumbnail} authors={book.authors} /></li>
+                        return <li key={book.id}><BookTile book={book} onShelfChange={this.changeShelf} /></li>
                       })}
                     </ol>
                   </div>
@@ -86,7 +100,7 @@ class BooksApp extends React.Component {
                     <ol className="books-grid">
                       {books.filter((book) => {return book.shelf === "read"}).map((book) => {
                         console.log(book)
-                        return <li key={book.id}><Book title={book.title} thumbnail={book.imageLinks.thumbnail} authors={book.authors} /></li>
+                        return <li key={book.id}><BookTile book={book} onShelfChange={this.changeShelf} /></li>
                       })}
                     </ol>
                   </div>
