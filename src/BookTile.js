@@ -6,11 +6,15 @@ class BookTile extends React.Component {
   render() {
     const { title, authors } = this.props.book
     const { book } = this.props
-    const thumbnail = this.props.book.imageLinks.smallThumbnail
     return (
       <div className="book">
         <div className="book-top">
-          <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${thumbnail})` }}></div>
+          {book.imageLinks && book.imageLinks.smallThumbnail && (
+            <div
+              className="book-cover"
+              style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.smallThumbnail})` }}>
+            </div>
+          )}
           <BookshelfSelector book={book} onShelfChange={this.props.onShelfChange} />
         </div>
         <div className="book-title">{title}</div>

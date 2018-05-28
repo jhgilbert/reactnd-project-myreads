@@ -6,33 +6,43 @@ import Bookshelf from './Bookshelf'
 class BookSearch extends React.Component {
   state = {
     searchTerm: '',
-    books: []
+    searchResults: []
   }
 
   handleInputChange = (event) => {
     event.preventDefault()
-    this.setState(
-      {searchTerm: event.target.value}
-    )
-    if (this.state.searchTerm.length > 0) {
-      this.searchBooks(this.state.searchTerm);
-    }
+    let searchTerm = event.target.value
+    this.setState({searchTerm})
+    this.searchBooks(searchTerm);
   }
 
   searchBooks = (query) => {
+    let searchResults
+    if (query === "") {
+      this.updateSearchResults([])
+      return
+    }
+
     BooksAPI.search(query)
-      .then((books) => {
-        if (books.error === "empty query") {
-          books = []
+      .then((result) => {
+        if (result.error === "empty query") {
+          searchResults = []
+        } else {
+          searchResults = result
         }
-        this.setState(() => ({
-          books
-        }))
+        this.updateSearchResults(searchResults)
       })
   }
 
+  updateSearchResults = (searchResults) => {
+    console.log("updating state of search results to ", searchResults)
+    this.setState(() => ({
+      searchResults
+    }))
+  }
+
   render() {
-    const { books, searchTerm } = this.state
+    const { searchTerm, searchResults } = this.state
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -57,7 +67,7 @@ class BookSearch extends React.Component {
         </div>
         <div className="search-books-results">
           <ol className="books-grid">
-            <Bookshelf title="Search Results" books={books} onShelfChange={this.props.onShelfChange} />
+            <Bookshelf title="Search Results" books={searchResults} onShelfChange={this.props.onShelfChange} />
           </ol>
         </div>
       </div>
