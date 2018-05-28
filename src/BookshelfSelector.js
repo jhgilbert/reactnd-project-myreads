@@ -15,12 +15,6 @@ class BookshelfSelector extends React.Component {
 
   render() {
     const { book } = this.props
-    console.log("book shelf is")
-    console.log(book.shelf)
-
-    if (!book.shelf) {
-      book.shelf = "none"
-    }
 
     return <div className="book-shelf-changer">
       <select value={this.parseBookshelf(book)} onChange={(e) => this.handleShelfChange(e)}>

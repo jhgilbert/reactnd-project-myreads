@@ -32,9 +32,6 @@ class BooksApp extends React.Component {
   }
 
   changeShelf = (book, newShelf) => {
-    console.log("shelf change attempted")
-    console.log(book)
-    console.log(newShelf)
     BooksAPI.update(book, newShelf)
       .then((res) => {
         this.refreshBookData()

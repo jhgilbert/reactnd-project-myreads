@@ -22,8 +22,6 @@ class BookSearch extends React.Component {
   searchBooks = (query) => {
     BooksAPI.search(query)
       .then((books) => {
-        console.log("search results:")
-        console.log(books)
         if (books.error === "empty query") {
           books = []
         }
