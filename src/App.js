@@ -41,6 +41,11 @@ class BooksApp extends React.Component {
 
   render() {
     const { books } = this.state
+    const shelves = [
+      {id: "currentlyReading", title: "Currently Reading"},
+      {id: "wantToRead", title: "Want To Read"},
+      {id: "read", title: "Read"},
+    ]
 
     return (
       <div className="app">
@@ -72,18 +77,14 @@ class BooksApp extends React.Component {
             </div>
             <div className="list-books-content">
               <div>
-                <Bookshelf
-                  title="Currently Reading"
-                  books={books.filter((book) => {return book.shelf === "currentlyReading"})}
-                  onShelfChange={this.changeShelf} />
-                <Bookshelf
-                  title="Want To Read"
-                  books={books.filter((book) => {return book.shelf === "wantToRead"})}
-                  onShelfChange={this.changeShelf} />
-                <Bookshelf
-                  title="Read"
-                  books={books.filter((book) => {return book.shelf === "read"})}
-                  onShelfChange={this.changeShelf} />
+                {shelves.map((shelf) => {
+                  return <Bookshelf
+                            key={shelf.id}
+                            title={shelf.title}
+                            books={books.filter((book) => {return book.shelf === shelf.id})}
+                            onShelfChange={this.changeShelf}
+                          />
+                })}
               </div>
             </div>
             <div className="open-search">
