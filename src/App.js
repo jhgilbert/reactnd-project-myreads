@@ -64,7 +64,7 @@ class BooksApp extends React.Component {
                     <ol className="books-grid">
                       {books.filter((book) => {return book.shelf === "currentlyReading"}).map((book) => {
                         console.log(book)
-                        return <li key={book.imageLinks.thumbnail}><Book title={book.title} thumbnail={book.imageLinks.thumbnail} authors={book.authors} /></li>
+                        return <li key={book.id}><Book title={book.title} thumbnail={book.imageLinks.thumbnail} authors={book.authors} /></li>
                       })}
                     </ol>
                   </div>
@@ -75,7 +75,7 @@ class BooksApp extends React.Component {
                     <ol className="books-grid">
                       {books.filter((book) => {return book.shelf === "wantToRead"}).map((book) => {
                         console.log(book)
-                        return <li key={book.imageLinks.thumbnail}><Book title={book.title} thumbnail={book.imageLinks.thumbnail} authors={book.authors} /></li>
+                        return <li key={book.id}><Book title={book.title} thumbnail={book.imageLinks.thumbnail} authors={book.authors} /></li>
                       })}
                     </ol>
                   </div>
@@ -86,7 +86,7 @@ class BooksApp extends React.Component {
                     <ol className="books-grid">
                       {books.filter((book) => {return book.shelf === "read"}).map((book) => {
                         console.log(book)
-                        return <li key={book.imageLinks.thumbnail}><Book title={book.title} thumbnail={book.imageLinks.thumbnail} authors={book.authors} /></li>
+                        return <li key={book.id}><Book title={book.title} thumbnail={book.imageLinks.thumbnail} authors={book.authors} /></li>
                       })}
                     </ol>
                   </div>
