@@ -1,9 +1,12 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import * as BooksAPI from './BooksAPI'
+import Bookshelf from './Bookshelf'
 
 class BookSearch extends React.Component {
   state = {
-    searchTerm: ''
+    searchTerm: '',
+    books: []
   }
 
   handleInputChange = (event) => {
@@ -11,9 +14,27 @@ class BookSearch extends React.Component {
     this.setState(
       {searchTerm: event.target.value}
     )
+    if (this.state.searchTerm.length > 0) {
+      this.searchBooks(this.state.searchTerm);
+    }
+  }
+
+  searchBooks = (query) => {
+    BooksAPI.search(query)
+      .then((books) => {
+        console.log("search results:")
+        console.log(books)
+        if (books.error === "empty query") {
+          books = []
+        }
+        this.setState(() => ({
+          books
+        }))
+      })
   }
 
   render() {
+    const { books, searchTerm } = this.state
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -29,15 +50,17 @@ class BookSearch extends React.Component {
             */}
             <input
               type="text"
-              value={this.state.searchTerm}
-              onChange={(event) => {this.handleInputChange(event)}}
+              value={searchTerm}
+              onChange={(event) => { this.handleInputChange(event) }}
               placeholder="Search by title or author"
             />
 
           </div>
         </div>
         <div className="search-books-results">
-          <ol className="books-grid"></ol>
+          <ol className="books-grid">
+            <Bookshelf title="Search Results" books={books} onShelfChange={this.props.onShelfChange} />
+          </ol>
         </div>
       </div>
     )

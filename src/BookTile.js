@@ -7,7 +7,6 @@ class BookTile extends React.Component {
     const { title, authors } = this.props.book
     const { book } = this.props
     const thumbnail = this.props.book.imageLinks.smallThumbnail
-    console.log(thumbnail)
     return (
       <div className="book">
         <div className="book-top">
@@ -15,7 +14,7 @@ class BookTile extends React.Component {
           <BookshelfSelector book={book} onShelfChange={this.props.onShelfChange} />
         </div>
         <div className="book-title">{title}</div>
-        {authors.map((author) => {
+        {authors && authors.map((author) => {
           return <div key={author} className="book-authors">{author}</div>
         })}
       </div>
