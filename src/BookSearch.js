@@ -16,14 +16,18 @@ class BookSearch extends React.Component {
     this.searchBooks(searchTerm);
   }
 
-  addShelfData = (allBooks, searchResults) => {
+  addShelfData = (shelvedBooks, searchResults) => {
     let parsedResults = searchResults.map((book) => {
-      for (var i = 0; i < allBooks.length; i++) {
-        if (allBooks[i].id === book.id) {
-          book.shelf = allBooks[i].shelf
+      // we use a for-loop here so we can stop the loop
+      // when we've found what we're looking for
+      for (var i = 0; i < shelvedBooks.length; i++) {
+        if (shelvedBooks[i].id === book.id) {
+          book.shelf = shelvedBooks[i].shelf
           return book
         }
       }
+      // if not found in shelved books,
+      // keep book in its original state
       return book
     } )
     return parsedResults
@@ -49,8 +53,8 @@ class BookSearch extends React.Component {
 
   updateSearchResults = (searchResults) => {
     BooksAPI.getAll()
-      .then((books) => {
-        searchResults = this.addShelfData(books, searchResults)
+      .then((shelvedBooks) => {
+        searchResults = this.addShelfData(shelvedBooks, searchResults)
         this.setState(() => ({
           searchResults
         }))
