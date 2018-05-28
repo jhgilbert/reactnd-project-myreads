@@ -13,7 +13,7 @@ class BookSearch extends React.Component {
     event.preventDefault()
     let searchTerm = event.target.value
     this.setState({searchTerm})
-    this.searchBooks(searchTerm);
+    this.searchBooks(searchTerm)
   }
 
   addShelfData = (shelvedBooks, searchResults) => {
@@ -27,21 +27,23 @@ class BookSearch extends React.Component {
         }
       }
       // if not found in shelved books,
-      // keep book in its original state
+      // leave book in its original state
       return book
     } )
     return parsedResults
   }
 
   searchBooks = (query) => {
-    let searchResults
+    // return empty results set if input is blank
     if (query === "") {
       this.updateSearchResults([])
       return
     }
 
+    // otherwise, send a query to the API
     BooksAPI.search(query)
       .then((result) => {
+        let searchResults
         if (result.error === "empty query") {
           searchResults = []
         } else {
@@ -52,6 +54,8 @@ class BookSearch extends React.Component {
   }
 
   updateSearchResults = (searchResults) => {
+    // pull all shelved books to update search results
+    // with shelf data
     BooksAPI.getAll()
       .then((shelvedBooks) => {
         searchResults = this.addShelfData(shelvedBooks, searchResults)
@@ -68,21 +72,12 @@ class BookSearch extends React.Component {
         <div className="search-books-bar">
           <Link className="close-search" to="/">Close</Link>
           <div className="search-books-input-wrapper">
-            {/*
-              NOTES: The search from BooksAPI is limited to a particular set of search terms.
-              You can find these search terms here:
-              https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
-
-              However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-              you don't find a specific author or title. Every search is limited by search terms.
-            */}
             <input
               type="text"
               value={searchTerm}
               onChange={(event) => { this.handleInputChange(event) }}
               placeholder="Search by title or author"
             />
-
           </div>
         </div>
         <div className="search-books-results">
