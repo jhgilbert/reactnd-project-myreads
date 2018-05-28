@@ -16,6 +16,19 @@ class BookSearch extends React.Component {
     this.searchBooks(searchTerm);
   }
 
+  addShelfData = (allBooks, searchResults) => {
+    let parsedResults = searchResults.map((book) => {
+      for (var i = 0; i < allBooks.length; i++) {
+        if (allBooks[i].id === book.id) {
+          book.shelf = allBooks[i].shelf
+          return book
+        }
+      }
+      return book
+    } )
+    return parsedResults
+  }
+
   searchBooks = (query) => {
     let searchResults
     if (query === "") {
@@ -35,10 +48,13 @@ class BookSearch extends React.Component {
   }
 
   updateSearchResults = (searchResults) => {
-    console.log("updating state of search results to ", searchResults)
-    this.setState(() => ({
-      searchResults
-    }))
+    BooksAPI.getAll()
+      .then((books) => {
+        searchResults = this.addShelfData(books, searchResults)
+        this.setState(() => ({
+          searchResults
+        }))
+      })
   }
 
   render() {
